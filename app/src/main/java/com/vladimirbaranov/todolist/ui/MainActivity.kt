@@ -2,7 +2,7 @@ package com.vladimirbaranov.todolist.ui
 
 import android.os.Bundle
 import com.vladimirbaranov.todolist.R
-import com.vladimirbaranov.todolist.ui.screens.todolist.TodoListFragment
+import com.vladimirbaranov.todolist.ui.screens.todoList.TodoListFragment
 import dagger.android.support.DaggerAppCompatActivity
 
 class MainActivity : DaggerAppCompatActivity() {

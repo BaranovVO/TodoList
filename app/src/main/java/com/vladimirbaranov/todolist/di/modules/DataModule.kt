@@ -1,9 +1,7 @@
 package com.vladimirbaranov.todolist.di.modules
 
 import android.app.Application
-import android.content.Context
 import androidx.room.Room
-import com.vladimirbaranov.todolist.TodoListApp
 import com.vladimirbaranov.todolist.data.database.TodoDao
 import com.vladimirbaranov.todolist.data.database.TodoDatabase
 import com.vladimirbaranov.todolist.data.repository.TodoRepositoryImpl
@@ -13,14 +11,14 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class DataModule() {
+class DataModule {
     companion object {
         private const val DATABASE_NAME = "TodoDB"
     }
 
     @Singleton
     @Provides
-    fun provideTodoDatabase(context:Application): TodoDatabase {
+    fun provideTodoDatabase(context: Application): TodoDatabase {
         return Room.databaseBuilder(
             context,
             TodoDatabase::class.java, DATABASE_NAME

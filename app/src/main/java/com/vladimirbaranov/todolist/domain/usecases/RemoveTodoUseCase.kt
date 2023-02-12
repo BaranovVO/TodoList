@@ -3,7 +3,7 @@ package com.vladimirbaranov.todolist.domain.usecases
 import com.vladimirbaranov.todolist.domain.entity.TodoData
 import com.vladimirbaranov.todolist.domain.repository.TodoRepository
 
-class RemoveUseCase(
+class RemoveTodoUseCase(
     private val todoRepository: TodoRepository
 ) {
     suspend fun execute(todoData: TodoData): Result<Unit> {

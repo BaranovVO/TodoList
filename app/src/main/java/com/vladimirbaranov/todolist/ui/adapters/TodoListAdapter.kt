@@ -8,7 +8,10 @@ import com.vladimirbaranov.todolist.databinding.TodoItemCardBinding
 import com.vladimirbaranov.todolist.domain.entity.TodoData
 import com.vladimirbaranov.todolist.ui.adapters.TodoListAdapter.ViewHolder
 
-class TodoListAdapter : RecyclerView.Adapter<ViewHolder>() {
+class TodoListAdapter(
+    private val todoItemListener: TodoItemListener
+) :
+    RecyclerView.Adapter<ViewHolder>() {
 
     private val items = mutableListOf<TodoData>()
 
@@ -22,7 +25,8 @@ class TodoListAdapter : RecyclerView.Adapter<ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            TodoItemCardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            TodoItemCardBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+            todoItemListener
         )
     }
 
@@ -33,10 +37,13 @@ class TodoListAdapter : RecyclerView.Adapter<ViewHolder>() {
     }
 
     class ViewHolder(
-        private val binding: TodoItemCardBinding
+        private val binding: TodoItemCardBinding,
+        private val todoItemListener: TodoItemListener
     ) : RecyclerView.ViewHolder(binding.root) {
+
         fun bind(todoData: TodoData) {
             binding.todoText.text = todoData.text
+            binding.btRemove.setOnClickListener { todoItemListener.onRemove(todoData) }
         }
     }
 
@@ -56,5 +63,9 @@ class TodoListAdapter : RecyclerView.Adapter<ViewHolder>() {
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
             return oldList[oldItemPosition] == newList[newItemPosition]
         }
+    }
+
+    interface TodoItemListener {
+        fun onRemove(todoData: TodoData)
     }
 }

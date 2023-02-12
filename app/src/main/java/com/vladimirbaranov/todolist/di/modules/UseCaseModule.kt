@@ -3,7 +3,7 @@ package com.vladimirbaranov.todolist.di.modules
 import com.vladimirbaranov.todolist.domain.repository.TodoRepository
 import com.vladimirbaranov.todolist.domain.usecases.CreateTodoUseCase
 import com.vladimirbaranov.todolist.domain.usecases.GetTodoListUseCase
-import com.vladimirbaranov.todolist.domain.usecases.RemoveUseCase
+import com.vladimirbaranov.todolist.domain.usecases.RemoveTodoUseCase
 import dagger.Module
 import dagger.Provides
 
@@ -20,7 +20,7 @@ class UseCaseModule {
     }
 
     @Provides
-    fun provideRemoveUseCase(todoRepository: TodoRepository):RemoveUseCase{
-        return RemoveUseCase(todoRepository)
+    fun provideRemoveUseCase(todoRepository: TodoRepository):RemoveTodoUseCase{
+        return RemoveTodoUseCase(todoRepository)
     }
 }

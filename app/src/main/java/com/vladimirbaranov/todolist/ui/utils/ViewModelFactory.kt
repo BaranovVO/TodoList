@@ -1,4 +1,4 @@
-package com.vladimirbaranov.todolist.di.utils
+package com.vladimirbaranov.todolist.ui.utils
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

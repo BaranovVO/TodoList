@@ -13,7 +13,7 @@ class TodoRepositoryImpl(
     private val todoDao: TodoDao
 ) : TodoRepository {
 
-    override fun getTodoList(): Flow<List<TodoData>> {
+    override fun getTodoListFlow(): Flow<List<TodoData>> {
         return todoDao.getAll().map { list -> list.map { it.toData() } }
     }
 

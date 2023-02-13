@@ -20,17 +20,17 @@ class TodoListViewModel @Inject constructor(
     private val removeTodoUseCase: RemoveTodoUseCase
 ) : ViewModel(), DefaultLifecycleObserver {
 
-    sealed class Event() {
+    sealed class Event {
         data class Error(val throwable: Throwable) : Event()
         data class TodoRemoved(val todoData: TodoData) : Event()
     }
 
+    private val eventChannel = Channel<Event>(Channel.BUFFERED)
+    val events = eventChannel.receiveAsFlow()
+
     private val _todoList = MutableStateFlow(listOf<TodoData>())
     val todoList: StateFlow<List<TodoData>>
         get() = _todoList
-
-    private val eventChannel = Channel<Event>(Channel.BUFFERED)
-    val events = eventChannel.receiveAsFlow()
 
     private var todoListCollectingJob: Job? = null
 

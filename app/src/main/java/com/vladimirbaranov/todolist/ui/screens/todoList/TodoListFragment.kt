@@ -4,15 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.vladimirbaranov.todolist.R
 import com.vladimirbaranov.todolist.databinding.FragmentTodoListBinding
 import com.vladimirbaranov.todolist.domain.entity.TodoData
 import com.vladimirbaranov.todolist.ui.adapters.TodoListAdapter
+import com.vladimirbaranov.todolist.ui.screens.addTodo.AddTodoFragment
+import com.vladimirbaranov.todolist.ui.screens.todoList.TodoListViewModel.Event.Error
+import com.vladimirbaranov.todolist.ui.screens.todoList.TodoListViewModel.Event.TodoRemoved
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -53,6 +58,7 @@ class TodoListFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         configTodoList()
+        configFab()
         configEvents()
     }
 
@@ -75,12 +81,36 @@ class TodoListFragment : DaggerFragment() {
         }
     }
 
+    private fun configFab() {
+        binding?.fab?.setOnClickListener {
+            requireActivity().supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.contentContainer, AddTodoFragment())
+                .addToBackStack(null)
+                .commit()
+            requireActivity().supportFragmentManager.executePendingTransactions()
+        }
+    }
+
     private fun configEvents() {
         viewModel.events.flowWithLifecycle(
             lifecycle = viewLifecycleOwner.lifecycle,
             minActiveState = Lifecycle.State.STARTED
         )
-            .onEach { }
+            .onEach {
+                when (it) {
+                    is Error -> onErrorEvent(it)
+                    is TodoRemoved -> onTodoRemovedEvent(it)
+                }
+            }
             .launchIn(viewLifecycleOwner.lifecycleScope)
+    }
+
+    private fun onErrorEvent(error: Error) {
+        Toast.makeText(requireContext(), getString(R.string.error), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun onTodoRemovedEvent(todoRemoved: TodoRemoved) {
+        Toast.makeText(requireContext(), getString(R.string.removed), Toast.LENGTH_SHORT).show()
     }
 }

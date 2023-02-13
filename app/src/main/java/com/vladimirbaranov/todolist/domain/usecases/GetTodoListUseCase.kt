@@ -9,7 +9,7 @@ class GetTodoListUseCase(
 ) {
     suspend fun execute(): Result<Flow<List<TodoData>>> {
         return try {
-            Result.success(todoRepository.getTodoList())
+            Result.success(todoRepository.getTodoListFlow())
         } catch (throwable: Throwable) {
             Result.failure(throwable)
         }

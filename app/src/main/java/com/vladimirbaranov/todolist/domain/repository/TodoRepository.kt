@@ -4,7 +4,7 @@ import com.vladimirbaranov.todolist.domain.entity.TodoData
 import kotlinx.coroutines.flow.Flow
 
 interface TodoRepository {
-    fun getTodoList(): Flow<List<TodoData>>
+    fun getTodoListFlow(): Flow<List<TodoData>>
     suspend fun createTodo(text: String): TodoData
     suspend fun removeTodo(todoData: TodoData)
 }

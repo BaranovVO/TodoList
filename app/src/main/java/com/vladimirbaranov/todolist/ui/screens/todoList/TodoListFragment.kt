@@ -6,10 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vladimirbaranov.todolist.R
 import com.vladimirbaranov.todolist.databinding.FragmentTodoListBinding
@@ -21,6 +18,7 @@ import com.vladimirbaranov.todolist.ui.screens.todoList.TodoListViewModel.Event.
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class TodoListFragment : DaggerFragment() {
@@ -74,11 +72,16 @@ class TodoListFragment : DaggerFragment() {
             layoutManager = LinearLayoutManager(requireContext())
         }
 
-        lifecycleScope.launchWhenStarted {
-            viewModel.todoList.collect {
-                todoListAdapter.updateTodoList(it)
+        viewModel.todoList.flowWithLifecycle(
+            lifecycle = viewLifecycleOwner.lifecycle,
+            minActiveState = Lifecycle.State.STARTED
+        )
+            .onEach {
+                viewModel.todoList.collect {
+                    todoListAdapter.updateTodoList(it)
+                }
             }
-        }
+            .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private fun configFab() {

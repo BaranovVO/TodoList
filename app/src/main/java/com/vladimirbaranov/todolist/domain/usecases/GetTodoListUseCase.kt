@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 class GetTodoListUseCase(
     private val todoRepository: TodoRepository
 ) {
-    suspend fun execute(): Result<Flow<List<TodoData>>> {
+    fun execute(): Result<Flow<List<TodoData>>> {
         return try {
             Result.success(todoRepository.getTodoListFlow())
         } catch (throwable: Throwable) {

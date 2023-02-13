@@ -15,7 +15,7 @@ class TodoRepositoryImpl(
 ) : TodoRepository {
 
     override fun getTodoListFlow(): Flow<List<TodoData>> {
-        return todoDao.getAll().map { list -> list.map { it.toData() } }
+        return todoDao.getAllFlow().map { list -> list.map { it.toData() } }
     }
 
     override suspend fun createTodo(newTodoData: NewTodoData): TodoData =

@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface TodoDao {
     @Query("SELECT * FROM Todo")
-    fun getAll(): Flow<List<TodoEntity>>
+    fun getAllFlow(): Flow<List<TodoEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(todoEntity: TodoEntity): Long

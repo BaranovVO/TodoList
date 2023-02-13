@@ -11,6 +11,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -41,7 +42,7 @@ class TodoListViewModel @Inject constructor(
                     eventChannel.send(Event.Error(it))
                 }
                 .onSuccess {
-                    it.collect { list ->
+                    it.cancellable().collect { list ->
                         _todoList.emit(list)
                     }
                 }

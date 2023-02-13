@@ -1,5 +1,6 @@
 package com.vladimirbaranov.todolist.domain.usecases
 
+import com.vladimirbaranov.todolist.domain.entity.NewTodoData
 import com.vladimirbaranov.todolist.domain.entity.TodoData
 import com.vladimirbaranov.todolist.domain.repository.TodoRepository
 
@@ -8,7 +9,7 @@ class CreateTodoUseCase(
 ) {
     suspend fun execute(text: String): Result<TodoData> {
         return try {
-            Result.success(todoRepository.createTodo(text))
+            Result.success(todoRepository.createTodo(NewTodoData(text = text)))
         } catch (throwable: Throwable) {
             Result.failure(throwable)
         }

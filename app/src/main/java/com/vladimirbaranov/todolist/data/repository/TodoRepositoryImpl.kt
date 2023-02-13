@@ -2,6 +2,7 @@ package com.vladimirbaranov.todolist.data.repository
 
 import com.vladimirbaranov.todolist.data.database.TodoDao
 import com.vladimirbaranov.todolist.data.database.TodoEntity
+import com.vladimirbaranov.todolist.domain.entity.NewTodoData
 import com.vladimirbaranov.todolist.domain.entity.TodoData
 import com.vladimirbaranov.todolist.domain.repository.TodoRepository
 import kotlinx.coroutines.Dispatchers
@@ -17,9 +18,9 @@ class TodoRepositoryImpl(
         return todoDao.getAll().map { list -> list.map { it.toData() } }
     }
 
-    override suspend fun createTodo(text: String): TodoData =
+    override suspend fun createTodo(newTodoData: NewTodoData): TodoData =
         withContext(Dispatchers.IO) {
-            val rowId = todoDao.insert(TodoEntity(id = 0, text = text))
+            val rowId = todoDao.insert(newTodoData.toEntity())
             return@withContext todoDao.getByRowId(rowId).toData()
         }
 
@@ -35,9 +36,9 @@ class TodoRepositoryImpl(
         )
     }
 
-    private fun TodoData.toEntity(): TodoEntity {
+    private fun NewTodoData.toEntity(): TodoEntity {
         return TodoEntity(
-            id = this.id,
+            id = 0,
             text = this.text
         )
     }

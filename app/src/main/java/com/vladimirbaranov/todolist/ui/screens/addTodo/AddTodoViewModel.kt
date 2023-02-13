@@ -29,4 +29,9 @@ class AddTodoViewModel @Inject constructor(
                 .onSuccess { eventChannel.send(Event.TodoAdded(it)) }
         }
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        eventChannel.close()
+    }
 }

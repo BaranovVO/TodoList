@@ -60,4 +60,9 @@ class TodoListViewModel @Inject constructor(
                 .onSuccess { eventChannel.send(Event.TodoRemoved(todoData)) }
         }
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        eventChannel.close()
+    }
 }
